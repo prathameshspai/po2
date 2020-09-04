@@ -26,21 +26,13 @@ public class DetailActivity extends AppCompatActivity {
     private String image, title,date,rate,overview,id;
     private URL traile;
     private String[] t_name,t_key;
-
+    ListView t_listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        ListView t_listView= findViewById(R.id.trailer_listview);
-        ArrayList<MyTrailer> trailer_list=new ArrayList<>();
 
-        for(int i=0;i<t_name.length;i++) {
-            trailer_list.add(new MyTrailer(t_name[i]));
-        }
-
-        TrailerAdapter adapter = new TrailerAdapter(this, trailer_list);
-        t_listView.setAdapter(adapter);
 
         mImage=(ImageView)findViewById(R.id.imageID);
         mDate=(TextView)findViewById(R.id.date_tv);
@@ -72,7 +64,11 @@ public class DetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         new trailerAsyncTask().execute(traile);
-    }
+
+        if(t_name!=null) {
+
+        }
+    } //.
 
 
 
@@ -97,12 +93,20 @@ public class trailerAsyncTask extends AsyncTask<URL, Void, String> {
                 t_key[i]=resultArray.getJSONObject(i).getString("key");
 
             }
+            t_listView = findViewById(R.id.trailer_listview);
+            ArrayList<MyTrailer> trailer_list = new ArrayList<>();
 
+            for (int i = 0; i < t_name.length; i++) {
+                trailer_list.add(new MyTrailer(t_name[i]));
+            }
+
+            TrailerAdapter adapter = new TrailerAdapter(DetailActivity.this, trailer_list);
+            t_listView.setAdapter(adapter);
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-return trailer;
+return null;
     }
 
     }
