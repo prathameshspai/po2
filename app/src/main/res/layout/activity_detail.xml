@@ -105,7 +105,11 @@
             android:layout_height="wrap_content"
             android:text="This is an overview."
             android:textColor="#000000"
-            android:layout_margin="16dp"
+
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+
             android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -123,14 +127,107 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/overview_tv"/>
 
-        <ListView
-            android:id="@+id/trailer_listview"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/trailer_linear"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/trailer_semi"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/trailer_listview"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            app:layout_constraintTop_toBottomOf="@+id/trailer_semi"
+            app:layout_constraintLeft_toLeftOf="parent"
             android:orientation="vertical"
+            android:visibility="visible"
             />
+
+        <TextView
+            android:id="@+id/not_Availabe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Trailers unavailable!"
+            android:textSize="16sp"
+            android:visibility="gone"
+            android:textColor="#000000"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trailer_semi"/>
+        </LinearLayout>
+
+
+
+
+        <TextView
+            android:id="@+id/review_semi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="Reviews: "
+            android:textSize="16sp"
+            android:textStyle="bold|italic"
+            android:textColor="#000000"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trailer_linear"/>
+
+        <ListView
+            android:id="@+id/review_listview"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            app:layout_constraintTop_toBottomOf="@+id/review_semi"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:orientation="vertical"
+            android:visibility="visible"
+            />
+
+<!--        <TextView-->
+<!--            android:id="@+id/Author_name"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            android:text="This author:"-->
+<!--            android:textSize="16sp"-->
+<!--            android:visibility="visible"-->
+<!--            android:textColor="#000000"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/review_semi"/>-->
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/review_real"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            android:text="I liked this movie..."-->
+<!--            android:textSize="16sp"-->
+<!--            android:visibility="visible"-->
+<!--            android:textColor="#000000"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/Author_name"/>-->
+
+        <TextView
+            android:id="@+id/review_gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="No reviews.."
+            android:textSize="16sp"
+            android:visibility="gone"
+            android:textColor="#000000"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/review_semi"/>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

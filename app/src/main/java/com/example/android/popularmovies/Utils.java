@@ -59,6 +59,25 @@ public class Utils {
         }
     }
 
+    public static String getResponseFromHttpdUrl(URL url) throws IOException {
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        try {
+            InputStream in = urlConnection.getInputStream();
+
+            Scanner scanner = new Scanner(in);
+            scanner.useDelimiter("\\A");
+
+            boolean hasInput = scanner.hasNext();
+            if (hasInput) {
+                return scanner.next();
+            } else {
+                return null;
+            }
+        } finally {
+            urlConnection.disconnect();
+        }
+    }
+
     public static MyMovie[] parseMoviesJson(String json) throws JSONException {
         String TMDBURL = "https://image.tmdb.org/t/p/w500";
         JSONObject jsonObject = new JSONObject(json);
