@@ -119,6 +119,7 @@ public class DetailActivity extends AppCompatActivity {
 
                 r_name= new String[result_Array.length()];
                 r_review= new String[result_Array.length()];
+                r_Combined=new String[result_Array.length()];
 
                 for(int i=0;i<result_Array.length();i++){
                     r_name[i]=result_Array.getJSONObject(i).getString("author");

@@ -138,7 +138,7 @@
         <ListView
             android:id="@+id/trailer_listview"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/trailer_semi"
             app:layout_constraintLeft_toLeftOf="parent"
             android:orientation="vertical"
@@ -178,41 +178,13 @@
         <ListView
             android:id="@+id/review_listview"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/review_semi"
             app:layout_constraintLeft_toLeftOf="parent"
             android:orientation="vertical"
             android:visibility="visible"
             />
 
-<!--        <TextView-->
-<!--            android:id="@+id/Author_name"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="16dp"-->
-<!--            android:layout_marginEnd="16dp"-->
-<!--            android:layout_marginBottom="16dp"-->
-<!--            android:text="This author:"-->
-<!--            android:textSize="16sp"-->
-<!--            android:visibility="visible"-->
-<!--            android:textColor="#000000"-->
-<!--            app:layout_constraintLeft_toLeftOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/review_semi"/>-->
-
-
-<!--        <TextView-->
-<!--            android:id="@+id/review_real"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="16dp"-->
-<!--            android:layout_marginEnd="16dp"-->
-<!--            android:layout_marginBottom="16dp"-->
-<!--            android:text="I liked this movie..."-->
-<!--            android:textSize="16sp"-->
-<!--            android:visibility="visible"-->
-<!--            android:textColor="#000000"-->
-<!--            app:layout_constraintLeft_toLeftOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/Author_name"/>-->
 
         <TextView
             android:id="@+id/review_gone"

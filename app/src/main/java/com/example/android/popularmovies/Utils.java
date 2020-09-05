@@ -22,7 +22,7 @@ public class Utils {
     private static final String BASEURL = "https://api.themoviedb.org/3/movie";
     //PLEASE ADD THE API KEY HERE.
 
-    private static final String apikey = "";
+    private static final String apikey = "dee24302d32f6471cecba5b5b36e7512";
 
     public static URL buildUrl(String query) {
         Uri builtUri = Uri.parse(BASEURL).buildUpon()
