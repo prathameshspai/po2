@@ -8,27 +8,46 @@ import androidx.room.PrimaryKey;
 public class Favorite {
 
     @PrimaryKey
-    private int f_Id;
-    private String f_Title;
-    @ColumnInfo(name = "image_url")
-    private String image_url;
+    private String fId;
+    private String ftitle;
 
-    public Favorite(int f_Id,String f_Title,String image_url){
-        this.f_Id = f_Id;
-        this.f_Title = f_Title;
-        this.image_url = image_url;
+    private String fimage;
+    private String frate;
+    private String fdate;
+    private String foverview;
+
+
+    public Favorite(String ftitle, String fimage, String frate, String fdate, String foverview,String fId){
+        this.ftitle = ftitle;
+        this.fimage = fimage;
+        this.frate = frate;
+        this.fdate = fdate;
+        this.foverview = foverview;
+        this.fId = fId;
     }
 
 
-    public String getF_Title() {
-        return f_Title;
+    public String getFid() {
+        return fId;
     }
 
-    public int getF_Id() {
-        return f_Id;
+    public String getFtitle() {
+        return ftitle;
     }
 
-    public String getImage_url() {
-        return image_url;
+    public String getFimage() {
+        return fimage;
+    }
+
+    public String getFrate() {
+        return frate;
+    }
+
+    public String getFdate() {
+        return fdate;
+    }
+
+    public String getFoverview() {
+        return foverview;
     }
 }
