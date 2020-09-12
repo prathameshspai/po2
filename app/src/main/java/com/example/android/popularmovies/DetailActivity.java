@@ -1,5 +1,6 @@
 package com.example.android.popularmovies;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -27,24 +28,39 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
+
     private TextView mTitle, mDate, mRate, mOverview, mNotAvailable;
     private ImageView mImage;
     private String image, title,date,rate,overview,id;
-    private URL traile,revie;
-    private String[] t_name,t_key, r_name, r_review, r_Combined;
-    ListView t_listView, combined;
+    private URL traile;
+    private String[] t_name,t_key;
+    ListView t_listView;
+    private Button review_button, add_fav_button, remove_fav_button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        ActionBar actionBar=getSupportActionBar();
+        actionBar.hide();
 
+        review_button=(Button)findViewById(R.id.review_button);
+        review_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                id=getIntent().getStringExtra("id");
+                Intent intent2 = new Intent(DetailActivity.this,ReviewActivity.class);
+                intent2.putExtra("id2",id);
+                startActivity(intent2);
+            }
+        });
 
         mImage=(ImageView)findViewById(R.id.imageID);
         mDate=(TextView)findViewById(R.id.date_tv);
         mRate=(TextView)findViewById(R.id.Rated_tv);
         mOverview=(TextView)findViewById(R.id.overview_tv);
         mTitle=(TextView)findViewById(R.id.titleID);
+
 
         title=getIntent().getStringExtra("title");
         date=getIntent().getStringExtra("date");
@@ -79,63 +95,27 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+        add_fav_button=(Button)findViewById(R.id.add_fav_button);
+        remove_fav_button=(Button)findViewById(R.id.remove_fav_button);
 
-        try {
-            revie = new URL(REVIEW_URL);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        new reviewAsyncTask().execute(revie);
+        add_fav_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                add_fav_button.setVisibility(View.GONE);
+                remove_fav_button.setVisibility(View.VISIBLE);
+            }
+        });
+        remove_fav_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                add_fav_button.setVisibility(View.VISIBLE);
+                remove_fav_button.setVisibility(View.GONE);
+            }
+        });
     } //.
 
 
-    public class reviewAsyncTask extends AsyncTask<URL, Void, String>{
-        @Override
-        protected void onPostExecute(String s) {
-            if(r_name.length!=0) {
-                combined = findViewById(R.id.review_listview);
-                ArrayList<MyReview> review_list = new ArrayList<>();
 
-                for (int i = 0; i < r_name.length; i++) {
-                    review_list.add(new MyReview(r_Combined[i]));
-                }
-
-                ReviewAdapter r_adapter = new ReviewAdapter(DetailActivity.this, review_list);
-                combined.setAdapter(r_adapter);
-
-            }
-       }
-
-        @Override
-        protected String doInBackground(URL... urlsr) {
-            URL urlr = urlsr[0];
-            String review = null;
-
-            try{
-
-                review = Utils.getResponseFromHttpUrl(urlr);
-                JSONObject jsonOb = new JSONObject(review);
-                JSONArray result_Array = jsonOb.getJSONArray("results");
-
-                r_name= new String[result_Array.length()];
-                r_review= new String[result_Array.length()];
-                r_Combined=new String[result_Array.length()];
-
-                for(int i=0;i<result_Array.length();i++){
-                    r_name[i]=result_Array.getJSONObject(i).getString("author");
-                    r_review[i]=result_Array.getJSONObject(i).getString("content");
-                    r_Combined[i]=""+r_name[i]+": \n"+r_review[i];
-
-                }
-
-
-            } catch (IOException | JSONException e) {
-                Log.e("DetailActivity", e.getMessage());
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
 
 
 public class trailerAsyncTask extends AsyncTask<URL, Void, String> {

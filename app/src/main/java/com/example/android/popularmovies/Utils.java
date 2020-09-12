@@ -21,6 +21,7 @@ import static android.content.ContentValues.TAG;
 public class Utils {
     private static final String BASEURL = "https://api.themoviedb.org/3/movie";
     //PLEASE ADD THE API KEY HERE.
+
     private static final String apikey = "";
 
     public static URL buildUrl(String query) {

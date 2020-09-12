@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Movie;
 import android.os.AsyncTask;
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
 
         if (id == R.id.toprated) {
             new MovieTask().execute ("top_rated");
+
             return true;
         }
         if (id == R.id.popular) {
