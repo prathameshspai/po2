@@ -1,10 +1,15 @@
 package com.example.android.popularmovies;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android.popularmovies.database.FavViewModel;
+import com.example.android.popularmovies.database.Favorite;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Movie;
@@ -16,10 +21,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import org.json.JSONException;
+import com.example.android.popularmovies.database.Favorite;
 
+import org.json.JSONException;
+import com.example.android.popularmovies.database.FavViewModel;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements PosterAdapter.PosterAdapterOnClickHandler{
     private RecyclerView recyclerView;
@@ -27,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
     private MyMovie[] array;
     private TextView fail;
     private String nTitle,nDate,nRate,nImage,nOverview,nId;
+
+    //SOURCE: https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#14
+    private FavViewModel mMovViewModel;
     //SOURCE: Sunshine App
 
     @Override
@@ -42,8 +54,35 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(posterAdapter);
         new MovieTask().execute ("popular");
+
+        mMovViewModel = new ViewModelProvider(this).get(FavViewModel.class);
+        mMovViewModel.getAllMovies().observe(this, new Observer<List<Favorite>>() {
+            @Override
+            public void onChanged(@Nullable final List<Favorite> words) {
+
+            }
+        });
     }
 
+    public void getAllFavorites(List<Favorite> fav){
+        Favorite favorite;
+
+        List<MyMovie> favour = new ArrayList<>();
+
+        for(int j = 1; j<fav.size();j++){
+            favorite = fav.get(j);
+
+            MyMovie favouriteMov=new MyMovie(favorite.getFtitle(),
+                    favorite.getFimage(),
+                    favorite.getFrate(),
+                    favorite.getFdate(),
+                    favorite.getFoverview(),
+                    favorite.getFid());
+
+            favour.add(favouriteMov);
+        }
+
+    }
     @Override
     public void onClick(int position) {
         //SOURCE:https://android.jlelse.eu/passing-data-between-activities-using-intent-in-android-85cb097f3016
@@ -117,6 +156,11 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
         }
         if (id == R.id.popular) {
             new MovieTask().execute ("popular");
+            return true;
+        }
+        if (id == R.id.fav_menuitem) {
+
+            getAllFavorites();
             return true;
         }
 

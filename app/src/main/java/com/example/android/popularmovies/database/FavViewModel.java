@@ -20,7 +20,7 @@ public class FavViewModel extends AndroidViewModel {
         mAllFavorites = mRepository.getAllMovies();
     }
 
-    LiveData<List<Favorite>> getAllMovies() { return mAllFavorites; }
+    public LiveData<List<Favorite>> getAllMovies() { return mAllFavorites; }
 
     public void insertFav(Favorite word) { mRepository.insertFav(word); }
     public void deleteFav(Favorite word) { mRepository.insertFav(word); }

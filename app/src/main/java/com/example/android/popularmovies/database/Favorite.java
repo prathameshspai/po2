@@ -1,5 +1,6 @@
 package com.example.android.popularmovies.database;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -7,8 +8,9 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "fav_table")
 public class Favorite {
 
+    @NonNull
     @PrimaryKey
-    private String fId;
+    private String fid;
     private String ftitle;
 
     private String fimage;
@@ -17,19 +19,17 @@ public class Favorite {
     private String foverview;
 
 
-    public Favorite(String ftitle, String fimage, String frate, String fdate, String foverview,String fId){
+    public Favorite(String ftitle, String fimage, String frate, String fdate, String foverview,String fid){
         this.ftitle = ftitle;
         this.fimage = fimage;
         this.frate = frate;
         this.fdate = fdate;
         this.foverview = foverview;
-        this.fId = fId;
+        this.fid = fid;
     }
 
 
-    public String getFid() {
-        return fId;
-    }
+
 
     public String getFtitle() {
         return ftitle;
@@ -49,5 +49,9 @@ public class Favorite {
 
     public String getFoverview() {
         return foverview;
+    }
+
+    public String getFid() {
+        return fid;
     }
 }

@@ -12,4 +12,10 @@
         android:orderInCategory="100"
         android:title="Sort by highest rated"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/fav_menuitem"
+        android:orderInCategory="100"
+        android:title="Favorites"
+        app:showAsAction="never"/>
 </menu>
