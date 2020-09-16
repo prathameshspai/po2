@@ -2,6 +2,8 @@ package com.example.android.popularmovies;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -16,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.android.popularmovies.database.FavViewModel;
+import com.example.android.popularmovies.database.Favorite;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -26,6 +30,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -36,6 +41,9 @@ public class DetailActivity extends AppCompatActivity {
     private String[] t_name,t_key;
     ListView t_listView;
     private Button review_button, add_fav_button, remove_fav_button;
+    private FavViewModel favViewModel;
+    private String isFavorite = "no";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +51,8 @@ public class DetailActivity extends AppCompatActivity {
 
         ActionBar actionBar=getSupportActionBar();
         actionBar.hide();
+
+
 
         review_button=(Button)findViewById(R.id.review_button);
         review_button.setOnClickListener(new View.OnClickListener() {
@@ -95,27 +105,41 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+
+
         add_fav_button=(Button)findViewById(R.id.add_fav_button);
         remove_fav_button=(Button)findViewById(R.id.remove_fav_button);
+
+        favViewModel=new ViewModelProvider(this).get(FavViewModel.class);
 
         add_fav_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                add_fav_button.setVisibility(View.GONE);
-                remove_fav_button.setVisibility(View.VISIBLE);
+                Favorite favourite = new Favorite(title, image, rate, date, overview, id);
+
+                if (isFavorite == "no") {
+                    isFavorite = "yes";
+                    add_fav_button.setVisibility(View.GONE);
+                    remove_fav_button.setVisibility(View.VISIBLE);
+                    favViewModel.insertFav(favourite);
+                }
             }
         });
         remove_fav_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                add_fav_button.setVisibility(View.VISIBLE);
-                remove_fav_button.setVisibility(View.GONE);
+                if (isFavorite == "yes") {
+                    Favorite favourite = new Favorite(title, image, rate, date, overview, id);
+                    isFavorite = "no";
+
+                    add_fav_button.setVisibility(View.VISIBLE);
+                    remove_fav_button.setVisibility(View.GONE);
+
+                    favViewModel.deleteFav(favourite);
+                }
             }
         });
     } //.
-
-
-
 
 
 public class trailerAsyncTask extends AsyncTask<URL, Void, String> {

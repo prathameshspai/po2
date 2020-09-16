@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
     private PosterAdapter posterAdapter;
     private MyMovie[] array;
     private TextView fail;
+    private String s="";
+    List<Favorite> words;
     private String nTitle,nDate,nRate,nImage,nOverview,nId;
 
     //SOURCE: https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#14
@@ -45,44 +47,55 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        fail= (TextView)findViewById(R.id.failed);
-        recyclerView = (RecyclerView)findViewById(R.id.recyclerViewID);
+        fail = (TextView) findViewById(R.id.failed);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewID);
 
         //SOURCE:https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/GridLayoutManager
-        int numOfColumns= 2;
-        recyclerView.setLayoutManager(new GridLayoutManager(this, numOfColumns,RecyclerView.VERTICAL,false));
+        int numOfColumns = 2;
+        recyclerView.setLayoutManager(new GridLayoutManager(this, numOfColumns, RecyclerView.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(posterAdapter);
-        new MovieTask().execute ("popular");
+        new MovieTask().execute("popular");
 
-        mMovViewModel = new ViewModelProvider(this).get(FavViewModel.class);
-        mMovViewModel.getAllMovies().observe(this, new Observer<List<Favorite>>() {
-            @Override
-            public void onChanged(@Nullable final List<Favorite> words) {
+//--------------------------------------------------------------------------------------------------------
+            mMovViewModel = new ViewModelProvider(this).get(FavViewModel.class);
+            mMovViewModel.getAllMovies().observe(this, new Observer<List<Favorite>>() {
+                @Override
+                public void onChanged(@Nullable final List<Favorite> words) {
+                    setAllFavorites(null);
+                    setAllFavorites(words);
+                }
+            });
 
-            }
-        });
     }
 
-    public void getAllFavorites(List<Favorite> fav){
+    public void setAllFavorites(List<Favorite> fav){
+        if(fav.size()!=0) {
         Favorite favorite;
 
         List<MyMovie> favour = new ArrayList<>();
 
-        for(int j = 1; j<fav.size();j++){
-            favorite = fav.get(j);
 
-            MyMovie favouriteMov=new MyMovie(favorite.getFtitle(),
-                    favorite.getFimage(),
-                    favorite.getFrate(),
-                    favorite.getFdate(),
-                    favorite.getFoverview(),
-                    favorite.getFid());
+            for (int j = 0; j < fav.size(); j++) {
+                favorite = fav.get(j);
 
-            favour.add(favouriteMov);
+                MyMovie favouriteMov = new MyMovie(favorite.getFtitle(),
+                        favorite.getFimage(),
+                        favorite.getFrate(),
+                        favorite.getFdate(),
+                        favorite.getFoverview(),
+                        favorite.getFid());
+
+                favour.add(favouriteMov);
+            }
         }
+        else{
+            recyclerView.setVisibility(View.GONE);
+            fail.setVisibility(View.VISIBLE);
 
+        }
     }
+    //--------------------------------------------------------------------------------------------------------
     @Override
     public void onClick(int position) {
         //SOURCE:https://android.jlelse.eu/passing-data-between-activities-using-intent-in-android-85cb097f3016
@@ -158,11 +171,13 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
             new MovieTask().execute ("popular");
             return true;
         }
+        //--------------------------------------------------------------------------------------------------------
         if (id == R.id.fav_menuitem) {
-
-            getAllFavorites();
+            s="getFav";
+            setAllFavorites(words);
             return true;
         }
+        //--------------------------------------------------------------------------------------------------------
 
         return super.onOptionsItemSelected(item);
     }
