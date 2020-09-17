@@ -10,14 +10,14 @@ public class Favorite {
 
     @NonNull
     @PrimaryKey
+    @ColumnInfo(name = "movie_id")
     private String fid;
-    private String ftitle;
 
+    private String ftitle;
     private String fimage;
     private String frate;
     private String fdate;
     private String foverview;
-
 
     public Favorite(String ftitle, String fimage, String frate, String fdate, String foverview,String fid){
         this.ftitle = ftitle;
@@ -27,9 +27,6 @@ public class Favorite {
         this.foverview = foverview;
         this.fid = fid;
     }
-
-
-
 
     public String getFtitle() {
         return ftitle;

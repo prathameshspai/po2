@@ -1,5 +1,6 @@
 package com.example.android.popularmovies;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,50 +42,52 @@ public class DetailActivity extends AppCompatActivity {
     private URL traile;
     private String[] t_name,t_key;
     ListView t_listView;
+    private LinearLayout fav_button;
     private Button review_button, add_fav_button, remove_fav_button;
     private FavViewModel favViewModel;
-    private String isFavorite = "no";
+    private String isFavorite="no", queryURL;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        ActionBar actionBar=getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-
-
-        review_button=(Button)findViewById(R.id.review_button);
+        review_button = (Button) findViewById(R.id.review_button);
         review_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                id=getIntent().getStringExtra("id");
-                Intent intent2 = new Intent(DetailActivity.this,ReviewActivity.class);
-                intent2.putExtra("id2",id);
+                id = getIntent().getStringExtra("id");
+                Intent intent2 = new Intent(DetailActivity.this, ReviewActivity.class);
+                intent2.putExtra("id2", id);
                 startActivity(intent2);
             }
         });
 
-        mImage=(ImageView)findViewById(R.id.imageID);
-        mDate=(TextView)findViewById(R.id.date_tv);
-        mRate=(TextView)findViewById(R.id.Rated_tv);
-        mOverview=(TextView)findViewById(R.id.overview_tv);
-        mTitle=(TextView)findViewById(R.id.titleID);
+        mImage = (ImageView) findViewById(R.id.imageID);
+        mDate = (TextView) findViewById(R.id.date_tv);
+        mRate = (TextView) findViewById(R.id.Rated_tv);
+        mOverview = (TextView) findViewById(R.id.overview_tv);
+        mTitle = (TextView) findViewById(R.id.titleID);
 
+        fav_button = (LinearLayout) findViewById(R.id.fav_linear);
 
-        title=getIntent().getStringExtra("title");
-        date=getIntent().getStringExtra("date");
-        rate=getIntent().getStringExtra("rate");
-        overview=getIntent().getStringExtra("overview");
-        image=getIntent().getStringExtra("image");
-        id=getIntent().getStringExtra("id");
-        String TRAILER_URL= "http://api.themoviedb.org/3/movie/"+id.toString()+"/videos?api_key="+getResources().getString(R.string.API_Key);
-        String REVIEW_URL="https://api.themoviedb.org/3/movie/"+id.toString()+"/reviews?api_key="+getResources().getString(R.string.API_Key);
+        title = getIntent().getStringExtra("title");
+        date = getIntent().getStringExtra("date");
+        rate = getIntent().getStringExtra("rate");
+        overview = getIntent().getStringExtra("overview");
+        image = getIntent().getStringExtra("image");
+        id = getIntent().getStringExtra("id");
+        String TRAILER_URL = "http://api.themoviedb.org/3/movie/" + id.toString() + "/videos?api_key=" + getResources().getString(R.string.API_Key);
+        String REVIEW_URL = "https://api.themoviedb.org/3/movie/" + id.toString() + "/reviews?api_key=" + getResources().getString(R.string.API_Key);
         mTitle.setText(title);
         mDate.setText(date);
         mOverview.setText(overview);
-        mRate.setText(rate+"/10");
+        mRate.setText(rate + "/10");
 
         //SOURCE:https://square.github.io/picasso/
         Picasso.get()
@@ -100,24 +104,45 @@ public class DetailActivity extends AppCompatActivity {
         t_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent t_intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v="+t_key[position]));
+                Intent t_intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + t_key[position]));
                 startActivity(t_intent);
             }
         });
 
 
+        add_fav_button = (Button) findViewById(R.id.add_fav_button);
+        remove_fav_button = (Button) findViewById(R.id.remove_fav_button);
 
-        add_fav_button=(Button)findViewById(R.id.add_fav_button);
-        remove_fav_button=(Button)findViewById(R.id.remove_fav_button);
-
-        favViewModel=new ViewModelProvider(this).get(FavViewModel.class);
+        favViewModel = new ViewModelProvider(this).get(FavViewModel.class);
 
         add_fav_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Favorite favourite = new Favorite(title, image, rate, date, overview, id);
-
                 if (isFavorite == "no") {
+                    isFavorite = "yes";
+                    add_fav_button.setVisibility(View.GONE);
+                    remove_fav_button.setVisibility(View.VISIBLE);
+                    favViewModel.insertFav(favourite);
+                } else {
+                    isFavorite = "no";
+                    add_fav_button.setVisibility(View.VISIBLE);
+                    remove_fav_button.setVisibility(View.GONE);
+                    favViewModel.deleteFav(favourite);
+                }
+            }
+        });
+
+        remove_fav_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Favorite favourite = new Favorite(title, image, rate, date, overview, id);
+                if (isFavorite == "yes") {
+                    isFavorite = "no";
+                    add_fav_button.setVisibility(View.VISIBLE);
+                    remove_fav_button.setVisibility(View.GONE);
+                    favViewModel.deleteFav(favourite);
+                } else {
                     isFavorite = "yes";
                     add_fav_button.setVisibility(View.GONE);
                     remove_fav_button.setVisibility(View.VISIBLE);
@@ -125,24 +150,9 @@ public class DetailActivity extends AppCompatActivity {
                 }
             }
         });
-        remove_fav_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isFavorite == "yes") {
-                    Favorite favourite = new Favorite(title, image, rate, date, overview, id);
-                    isFavorite = "no";
+    }
 
-                    add_fav_button.setVisibility(View.VISIBLE);
-                    remove_fav_button.setVisibility(View.GONE);
-
-                    favViewModel.deleteFav(favourite);
-                }
-            }
-        });
-    } //.
-
-
-public class trailerAsyncTask extends AsyncTask<URL, Void, String> {
+    public class trailerAsyncTask extends AsyncTask<URL, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         if(t_name.length!=0) {

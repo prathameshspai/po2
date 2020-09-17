@@ -62,15 +62,15 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
             mMovViewModel.getAllMovies().observe(this, new Observer<List<Favorite>>() {
                 @Override
                 public void onChanged(@Nullable final List<Favorite> words) {
-                    setAllFavorites(null);
+
                     setAllFavorites(words);
                 }
             });
 
     }
 
-    public void setAllFavorites(List<Favorite> fav){
-        if(fav.size()!=0) {
+    public void setAllFavorites(List<Favorite> fav) {
+            if(fav!=null&&fav.size()!=0) {
         Favorite favorite;
 
         List<MyMovie> favour = new ArrayList<>();
@@ -89,11 +89,11 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
                 favour.add(favouriteMov);
             }
         }
-        else{
-            recyclerView.setVisibility(View.GONE);
-            fail.setVisibility(View.VISIBLE);
-
-        }
+//        else{
+//            recyclerView.setVisibility(View.GONE);
+//            fail.setVisibility(View.VISIBLE);
+//
+//        }
     }
     //--------------------------------------------------------------------------------------------------------
     @Override

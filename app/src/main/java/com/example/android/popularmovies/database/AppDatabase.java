@@ -12,7 +12,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 //SOURCE: https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#7
-@Database(entities = {Favorite.class}, version = 1, exportSchema = false)
+//SOURCE: https://stackoverflow.com/questions/44197309/room-cannot-verify-the-data-integrity
+
+@Database(entities = {Favorite.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
@@ -29,6 +31,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 Log.d(LOG_TAG, "Creating new database instance");
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
                         AppDatabase.class, AppDatabase.DATABASE_NAME)
+                        .fallbackToDestructiveMigration()
                         .build();
             }
         }
