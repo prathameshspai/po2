@@ -173,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.Pos
         }
         //--------------------------------------------------------------------------------------------------------
         if (id == R.id.fav_menuitem) {
-            s="getFav";
             setAllFavorites(words);
             return true;
         }

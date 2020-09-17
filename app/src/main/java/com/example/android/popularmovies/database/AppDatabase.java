@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 //SOURCE: https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#7
 //SOURCE: https://stackoverflow.com/questions/44197309/room-cannot-verify-the-data-integrity
 
-@Database(entities = {Favorite.class}, version = 2, exportSchema = false)
+@Database(entities = {Favorite.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();

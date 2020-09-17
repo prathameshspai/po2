@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.room.Query;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -33,6 +34,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -119,13 +121,11 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Favorite favourite = new Favorite(title, image, rate, date, overview, id);
-                if (isFavorite == "no") {
-                    isFavorite = "yes";
+                if(favViewModel.isIncluded(id)){
                     add_fav_button.setVisibility(View.GONE);
                     remove_fav_button.setVisibility(View.VISIBLE);
                     favViewModel.insertFav(favourite);
                 } else {
-                    isFavorite = "no";
                     add_fav_button.setVisibility(View.VISIBLE);
                     remove_fav_button.setVisibility(View.GONE);
                     favViewModel.deleteFav(favourite);
@@ -137,13 +137,11 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Favorite favourite = new Favorite(title, image, rate, date, overview, id);
-                if (isFavorite == "yes") {
-                    isFavorite = "no";
+                if (!favViewModel.isIncluded(id)){
                     add_fav_button.setVisibility(View.VISIBLE);
                     remove_fav_button.setVisibility(View.GONE);
                     favViewModel.deleteFav(favourite);
                 } else {
-                    isFavorite = "yes";
                     add_fav_button.setVisibility(View.GONE);
                     remove_fav_button.setVisibility(View.VISIBLE);
                     favViewModel.insertFav(favourite);

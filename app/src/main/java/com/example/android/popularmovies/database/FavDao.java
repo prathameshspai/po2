@@ -19,4 +19,7 @@ void delete(Favorite favorite);
 
 @Query("SELECT * FROM fav_table")
 LiveData<List<Favorite>> loadAllMovies();
+
+@Query("SELECT * FROM fav_table WHERE movie_id=:movieId")
+    boolean isIncluded(String movieId);
 }

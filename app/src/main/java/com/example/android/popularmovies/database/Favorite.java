@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.Query;
 
 @Entity(tableName = "fav_table")
 public class Favorite {
@@ -18,6 +19,8 @@ public class Favorite {
     private String frate;
     private String fdate;
     private String foverview;
+    public boolean krp;
+
 
     public Favorite(String ftitle, String fimage, String frate, String fdate, String foverview,String fid){
         this.ftitle = ftitle;
@@ -51,4 +54,6 @@ public class Favorite {
     public String getFid() {
         return fid;
     }
+
+
 }

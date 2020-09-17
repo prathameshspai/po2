@@ -21,7 +21,7 @@ public class FavViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Favorite>> getAllMovies() { return mAllFavorites; }
-
+    public boolean isIncluded(String movieId){return isIncluded(movieId);}
     public void insertFav(Favorite word) { mRepository.insertFav(word); }
     public void deleteFav(Favorite word) { mRepository.insertFav(word); }
 }
